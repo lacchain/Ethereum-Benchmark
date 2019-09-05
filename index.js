@@ -39,10 +39,11 @@ const sendTxs =  numberOfTransactions => {
   }
 }
 
-const numberOfTransactions = 500 //set this number to set the amount of transactions
+const numberOfTransactions = parseInt(process.argv.slice(2)[0],10)  //500 //set this number to set the amount of transactions
 const t1 = Date.now()
 sendTxs(numberOfTransactions)
 const t2 = Date.now()
+console.log("N° Tx: ",numberOfTransactions)
 const delta = (t2-t1)/1000
 console.log("time:", delta)
 const rate = numberOfTransactions/(delta);
