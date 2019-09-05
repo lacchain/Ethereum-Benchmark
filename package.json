@@ -1,0 +1,17 @@
+{
+  "name": "extradatatx",
+  "version": "1.0.0",
+  "description": "send extradata to pantheon private network",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ethereumjs-tx": "^1.3.7",
+    "jest": "^23.6.0",
+    "supertest": "^3.4.1",
+    "web3": "^1.0.0-beta.55"
+  }
+}
