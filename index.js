@@ -1,5 +1,22 @@
 const {buildTransaction,sendTransaction,getTransaction} = require('./pantheon_utils/web3Operations')
 const {createRandomString} = require("./lib/helpers")
+const amountData =process.argv.slice(2)[1] //data in bytes
+let randomData=null
+if(amountData){
+  try{
+    randomData = createRandomString(parseInt(amountData))    
+    if(!randomData){
+      console.log("amount of data(second argument) must be an integer")
+      process.exit()
+    }
+    console.log("Generated random data", randomData)
+  }catch(e){
+    console.log("if you want to simulate data, then indicate amount of data in bytes")
+    process.exit()
+  }
+}else{
+  randomData=""
+}
 
 const generateKeys = i => {
   const privateKeys = []
@@ -15,10 +32,11 @@ const generateKeys = i => {
 const addressTo = '0xf17f52151EbEF6C7334FAD080c5704D77216b732'
 const valueInEther = "0"
 
-const publishData = async(privKey,i) => {
+const publishData = async(privKey,i,addtionalData="") => {
+  console.log("additional data", addtionalData)
   try{
     const txCount = 0//await web3.eth.getTransactionCount(addressFrom)
-    const txObject = buildTransaction(txCount,addressTo,valueInEther,"some custom data")
+    const txObject = buildTransaction(txCount,addressTo,valueInEther,addtionalData)
     const receipt = await sendTransaction(txObject,privKey)
     console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")
     //const receivedTx = await getTransaction(receipt.transactionHash)
@@ -35,7 +53,7 @@ const sendTxs =  numberOfTransactions => {
   const randomPrivateKeys = generateKeys(numberOfTransactions)
   for(i=0;i<numberOfTransactions;i++){
     //console.log("sending with pK: ",randomPrivateKeys[i])
-    publishData(randomPrivateKeys[i],i)
+    publishData(randomPrivateKeys[i],i,randomData)    
   }
 }
 
