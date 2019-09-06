@@ -29,14 +29,14 @@ function buildSmartContractTransaction(txnCount,contractData){
 }
 
 const sendTransaction= async(txObject,privKey)=>{
-    console.log('sending data...')
+    //console.log('sending data...')
 
     const tx = new ethTx(txObject)
     tx.sign(privKey)
 
     const serializedTx = tx.serialize()
     const rawTxHex = '0x' + serializedTx.toString('hex')
-    console.log(rawTxHex)
+    //console.log(rawTxHex)
     
     const receipt = await web3.eth.sendSignedTransaction(rawTxHex)
     return receipt

@@ -5,6 +5,7 @@ node_modules
 *lock.json
 deploy.js
 .data
+*.csv
 
 
 
