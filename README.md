@@ -39,6 +39,10 @@ Transactions are sent in an environment of zero ether and non additional data.
     ```shell
     const web3 = new Web3(new Web3.providers.HttpProvider('http://YOUR_IP_NODE:RPC_PORT'))
     ```
+* Create the folder logs into the project folder:
+    ```shell
+    mkdir logs
+    ```
 * Now you are ready to run the script index.js, but take into consideration the following syntax:
     ```shell
     node index.js number_of_transactions_to_send amount_bytes_to_send_on_each_transaction
