@@ -1,59 +1,36 @@
 const {buildTransaction,sendTransaction} = require('./pantheon_utils/web3Operations')
-const {createRandomString} = require("./lib/helpers")
+const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData} = require("./lib/helpers")
 const {append} = require("./lib/logs")
-const numberOfTransactions = parseInt(process.argv.slice(2)[0],10)  //500 //set this number to set the amount of transactions
-const amountData =process.argv.slice(2)[1] //data to store in bytes on each transaction
-const timeOut = parseInt(process.argv.slice(2)[2]) //miliseconds
+
+///////////////////////////////////VERIFICATIONS/////////////////////////////////////////////
+const desiredRateTx = verifyDesiredRate(parseInt(process.argv.slice(2)[0],10))
+const amountData =verifyAmountData(process.argv.slice(2)[1]) //data to store in bytes on each transaction
+const testTimeMinutes = verifyTestime(process.argv.slice(2)[2])
+const testTime = testTimeMinutes * 60//time in minutes => convert to seconds
+
+///////////////////////////////////PROCESS VARIABLES/////////////////////////////////////////////
 const addressTo = '0xf17f52151EbEF6C7334FAD080c5704D77216b732'
 const valueInEther = "0"
-let fileNameStimulus=`${numberOfTransactions}-txs-0-bytesperTx-stimulus`
-let fileNameResponse=`${numberOfTransactions}-txs-0-bytesperTx-response`
-let randomData=null
+let randomData=""
 let t1=null
 let count = 0
 let failed = 0
+let i = 0
 
-/**
- * @TODO Take this function to a helper
- * input: amountData
- * output: fileName, random data
- */
-if(amountData && parseInt(amountData)!==0){
-  try{
-    randomData = createRandomString(parseInt(amountData))    
-    if(!randomData){
-      console.log("amount of data(second argument) must be an integer")
-      process.exit()
-    }
-    fileNameStimulus=`${numberOfTransactions}-txs-${amountData}-bytesperTx-stimulus`
-    fileNameResponse=`${numberOfTransactions}-txs-${amountData}-bytesperTx-response`
-    //console.log("Generated random data", randomData)
-  }catch(e){
-    console.log("if you want to simulate data, then indicate amount of data in bytes")
-    process.exit()
-  }
-}else{
-  randomData=""
+const timeOut = 1/desiredRateTx * 1000
+const numberOfTransactions = desiredRateTx * testTime
+const randomPrivateKeys = generateKeys(numberOfTransactions)
+//log Files
+let fileNameStimulus=`${desiredRateTx}-txsPerSec-0-bytesperTx-${testTimeMinutes}-minutes-stimulus`
+let fileNameResponse=`${desiredRateTx}-txsPerSec-0-bytesperTx-${testTimeMinutes}-minutes-response`
+
+if(amountData>0){
+  randomData = createRandomString(parseInt(amountData))
+  fileNameStimulus=`${desiredRateTx}-txsPerSec-${amountData}-bytesperTx-${testTimeMinutes}-minutes-stimulus`
+  fileNameResponse=`${desiredRateTx}-txsPerSec-${amountData}-bytesperTx-${testTimeMinutes}-minutes-response`
 }
 
-/**
- * 
- * @TODO take this to helpers
- * inputs: i (number of keys to generate)
- * output: array of privateKeys
- */
-const generateKeys = i => {
-  const privateKeys = []
-  for(k=1;k<=i;k++){
-    let randomHexKey = createRandomString(64)
-    const bufferRandomKey = Buffer.from(randomHexKey,'hex')    
-    privateKeys.push(bufferRandomKey)
-  }
-  //console.log(privateKeys)
-  return privateKeys
-}
-
-
+////////////////////////////CORE FUNCTIONS///////////////////////////////////////////////////
 const publishData = async(privKey,i,addtionalData="") => {
   let txTimeResponse
   try{
@@ -74,10 +51,6 @@ const publishData = async(privKey,i,addtionalData="") => {
     console.log("All done!!")
   }
 }
-
-
-let i = 0
-const randomPrivateKeys = generateKeys(numberOfTransactions)
 
 //@TODO: improve file name and randomData
 const logOutputAndPublish = (pK,i) => {
@@ -100,6 +73,8 @@ const sendTxs =  numberOfTransactions => {
   }
 }
 
+///////////////////////////////////STIMULUS AND RESULTS////////////////////////////////////////////////
+
 const showStimulusResults = () => {
   console.log("\n************STIMULUS STATISTICS***************")
   const t2 = Date.now()
@@ -117,9 +92,13 @@ const showResponseResults = (failed,delta) => {
   console.log(`response time (s):  ${delta}` )
   console.log(`Effectiveness(%): ${(numberOfTransactions-failed)/numberOfTransactions*100}%`)  
   const rate = numberOfTransactions/(delta)
-  console.log("Average rate: ",rate, "tx/s")
+  console.log("Average responsiveness rate: ",rate, "tx/s")
 }
+
+////////////////////////////////////MAIN///////////////////////////////////////////
 
 t1 = Date.now()
 console.log(`Please wait; this test will aproximately take ${timeOut/1000*2*numberOfTransactions} seconds...`)
 sendTxs(numberOfTransactions)
+
+//node index.js rate(tx/s) amountDataBytes timeTest(minutes)
