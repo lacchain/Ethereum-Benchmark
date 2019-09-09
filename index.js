@@ -40,7 +40,7 @@ const publishData = async(privKey,i,addtionalData="") => {
     txTimeResponse = (Date.now() - t1)    
     append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(numberOfTransactions-count).toString()}`) //sending without awaitng
     count++
-    //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")        
+    //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")  on block `,receipt.blockNumber,"...")        
   }catch(e){
     console.log(`Error with transaction N° ${i} => ${e.message}\n Error occurred in privateKey: ${privKey}`)
     failed++
@@ -59,17 +59,27 @@ const logOutputAndPublish = (pK,i) => {
   publishData(pK,i,randomData)
 }
 
-const sendTxs =  numberOfTransactions => {
+const sendTxs =  numberOfTransactions => {  
+
   if(i<numberOfTransactions){
-    logOutputAndPublish(randomPrivateKeys[i],i)
-    setTimeout(()=>{
-      i++
-      sendTxs(numberOfTransactions)//using recursive strategy to achieve delay      
-      //console.log("Entering here...")
-      if(i==numberOfTransactions-1){
-        showStimulusResults()
-      }
-    },timeOut)//waiting ...
+    //publishing
+    logOutputAndPublish(randomPrivateKeys[i],i)    
+    
+    //waiting
+    while((Date.now() - tPrevious) < timeOut){
+    //waiting => more precise   
+    }
+
+    tPrevious=Date.now()
+
+     //Finishing
+    if(i==numberOfTransactions-1){
+      showStimulusResults()
+    }
+
+    //recursive
+    i++
+    sendTxs(numberOfTransactions)//using recursive strategy to achieve delay
   }
 }
 
@@ -80,7 +90,7 @@ const showStimulusResults = () => {
   const t2 = Date.now()
   console.log("N° sent Tx: ",numberOfTransactions)
   const delta = (t2-t1)/1000
-  console.log("time:", delta)
+  console.log("time (s):", delta)
   const rate = numberOfTransactions/(delta)
   console.log("Rate: ",rate, "tx/s")
 }
@@ -98,6 +108,7 @@ const showResponseResults = (failed,delta) => {
 ////////////////////////////////////MAIN///////////////////////////////////////////
 
 t1 = Date.now()
+let tPrevious = t1
 console.log(`Please wait; this test will aproximately take ${timeOut/1000*2*numberOfTransactions} seconds...`)
 sendTxs(numberOfTransactions)
 
