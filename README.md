@@ -45,8 +45,12 @@ Transactions are sent in an environment of zero ether and non additional data.
     ```
 * Now you are ready to run the script index.js, but take into consideration the following syntax:
     ```shell
-    node index.js number_of_transactions_to_send amount_bytes_to_send_on_each_transaction
+    node index.js desiredRate_txs_per_second amount_bytes_to_send_on_each_transaction testing_time_in_minutes
     ```
+    Where: 
+    1. desiredRate_txs_per_second : Is the rate at which pantheon node will receive transactions in a period of one second.
+    2. amount_bytes_to_send_on_each_transaction : Is The amount of bytes to add on each transaction.
+    3. testing_time_in_minutes :  Is the period of time, in minutes, at which Pantheon will be exposed to a bunch of transactions.
 
 ### OBSERVATIONS AFTER RUNNING THE SCRIPT ###
 * When a bunch of transactions are sent to a regular node that is not connected to a validator, then those transactions are not processed, even when later that regular connects to a validator.
