@@ -1,7 +1,7 @@
 const {buildTransaction,sendTransaction} = require('./pantheon_utils/web3Operations')
 const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData,verifyNumberOfContainers} = require("./lib/helpers")
 const {append} = require("./lib/logs")
-const {DESIRED_RATE_TX,AMOUNT_DATA_BYTES,TEST_TIME_MINUTES,NUMBER_OF_CONTAINERS} = require("./keys")
+const {DESIRED_RATE_TX,AMOUNT_DATA_BYTES,TEST_TIME_MINUTES,NUMBER_OF_CONTAINERS,STORE_DATA} = require("./keys")
 
 ///////////////////////////////////VERIFICATIONS/////////////////////////////////////////////
 const desiredRateTx = verifyDesiredRate(parseInt(DESIRED_RATE_TX))
@@ -39,8 +39,11 @@ const publishData = async(privKey,i,addtionalData="") => {
     const txCount = 0//await web3.eth.getTransactionCount(addressFrom)
     const txObject = buildTransaction(txCount,addressTo,valueInEther,addtionalData)
     await sendTransaction(txObject,privKey)//const receipt = await sendTransaction(txObject,privKey)//only awaiting here for pantheon response
-    txTimeResponse = (Date.now() - t1)    
-    append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(numberOfTransactions-count).toString()}`) //sending without awaitng
+    txTimeResponse = (Date.now() - t1)
+    if(STORE_DATA=="TRUE"){
+      //append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(numberOfTransactions-count).toString()}`) //sending without awaitng
+      append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count+1).toString()}`) //sending without awaitng
+    }
     count++
     //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")  on block `,receipt.blockNumber,"...")        
   }catch(e){
@@ -60,7 +63,9 @@ const publishData = async(privKey,i,addtionalData="") => {
 //@TODO: improve file name and randomData
 const logOutputAndPublish = (pK,i) => {
   const txSendingTime = Date.now() - t1
-  append(`${fileNameStimulus}`,`${txSendingTime.toString()},${(i+1).toString()}`)
+  if(STORE_DATA=="TRUE"){
+    append(`${fileNameStimulus}`,`${txSendingTime.toString()},${(i+1).toString()}`)
+  }
   publishData(pK,i,randomData)
 }
 
@@ -68,7 +73,7 @@ const sendTxs =  numberOfTransactions => {
 
   if(i<numberOfTransactions){
     //publishing
-    logOutputAndPublish(randomPrivateKeys[i],i)    
+    logOutputAndPublish(randomPrivateKeys[i],i)
     
     //waiting
     while((Date.now() - tPrevious) < timeOut){
