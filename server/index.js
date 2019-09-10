@@ -1,13 +1,14 @@
 const {buildTransaction,sendTransaction} = require('./pantheon_utils/web3Operations')
-const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData} = require("./lib/helpers")
+const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData,verifyNumberOfContainers} = require("./lib/helpers")
 const {append} = require("./lib/logs")
-const {DESIRED_RATE_TX,AMOUNT_DATA_BYTES,TEST_TIME_MINUTES} = require("./keys")
+const {DESIRED_RATE_TX,AMOUNT_DATA_BYTES,TEST_TIME_MINUTES,NUMBER_OF_CONTAINERS} = require("./keys")
 
 ///////////////////////////////////VERIFICATIONS/////////////////////////////////////////////
 const desiredRateTx = verifyDesiredRate(parseInt(DESIRED_RATE_TX))
 const amountData =verifyAmountData(AMOUNT_DATA_BYTES) //data to store in bytes on each transaction
 const testTimeMinutes = verifyTestime(TEST_TIME_MINUTES)
 const testTime = testTimeMinutes * 60//time in minutes => convert to seconds
+const numerOfContainers = verifyNumberOfContainers(NUMBER_OF_CONTAINERS)
 
 ///////////////////////////////////PROCESS VARIABLES/////////////////////////////////////////////
 const addressTo = '0xf17f52151EbEF6C7334FAD080c5704D77216b732'
@@ -22,13 +23,13 @@ const timeOut = 1/desiredRateTx * 1000
 const numberOfTransactions = desiredRateTx * testTime
 const randomPrivateKeys = generateKeys(numberOfTransactions)
 //log Files
-let fileNameStimulus=`${desiredRateTx}-txsPerSec-0-bytesperTx-${testTimeMinutes}-minutes-stimulus`
-let fileNameResponse=`${desiredRateTx}-txsPerSec-0-bytesperTx-${testTimeMinutes}-minutes-response`
+let fileNameStimulus=`${desiredRateTx*numerOfContainers}-txsPerSec-0-bytesperTx-${testTimeMinutes}-minutes-stimulus`
+let fileNameResponse=`${desiredRateTx*numerOfContainers}-txsPerSec-0-bytesperTx-${testTimeMinutes}-minutes-response`
 
 if(amountData>0){
   randomData = createRandomString(parseInt(amountData))
-  fileNameStimulus=`${desiredRateTx}-txsPerSec-${amountData}-bytesperTx-${testTimeMinutes}-minutes-stimulus`
-  fileNameResponse=`${desiredRateTx}-txsPerSec-${amountData}-bytesperTx-${testTimeMinutes}-minutes-response`
+  fileNameStimulus=`${desiredRateTx*numerOfContainers}-txsPerSec-${amountData}-bytesperTx-${testTimeMinutes}-minutes-stimulus`
+  fileNameResponse=`${desiredRateTx*numerOfContainers}-txsPerSec-${amountData}-bytesperTx-${testTimeMinutes}-minutes-response`
 }
 
 ////////////////////////////CORE FUNCTIONS///////////////////////////////////////////////////

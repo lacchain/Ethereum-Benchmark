@@ -35,21 +35,25 @@ Transactions are sent in an environment of zero ether and non additional data.
 * Clone the repository
 * Enter into the folder ethereum-node-benchmark/server
 * run npm install
-* Go back to the root folder and open docker-compose.yml; there you will have the posibility to set the following enviroment variables which aplies for all containers:
+* Go back to the root folder and open docker-compose.yml; there you will have the posibility to SET the following enviroment variables which aplies for all containers:
     ```shell
     - DESIRED_RATE_TX=50
     - AMOUNT_DATA_BYTES=0
     - TEST_TIME_MINUTES=1
     - RPC_URL=http://localhost:1234
+    - NUMBER_OF_CONTAINERS=2
     ```
     Where: 
     1. DESIRED_RATE_TX : Is the rate at which pantheon node will receive transactions in a period of one second.
     2. AMOUNT_DATA_BYTES : Is The amount of bytes to add on each transaction.
     3. TEST_TIME_MINUTES :  Is the period of time, in minutes, at which Pantheon will be exposed to a bunch of transactions sent from this code when running.
     4. RPC_URL : the rpc url that point to the pantheon node to test
+    5. NUMBER_OF_CONTAINERS is the number of containers you have configured on this docker-compose file.
 
     Be mindful that you can run as many containers as you want; and also on each of those; you can customize
     different RPC URLs.
+
+    This project is created whith the assumption that all containers runs with the same rate(DESIRED_RATE_TX).
 
     It is recommended to set each container with the following considerations:
     1. Set DESIRED_RATE_TX up to 50 tx/s if you send from 0 to 10kB (AMOUNT_DATA_BYTES)

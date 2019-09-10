@@ -8,10 +8,11 @@ services:
       - /app/node_modules
       - ./server:/app
     environment: &environment
-      - DESIRED_RATE_TX=50
+      - DESIRED_RATE_TX=1
       - AMOUNT_DATA_BYTES=0
       - TEST_TIME_MINUTES=1
       - RPC_URL=http://localhost:1234  #http://35.239.2.191:4545
+      - NUMBER_OF_CONTAINERS=2
     network_mode: host #using localhost instead of isolated network
 
   server2:

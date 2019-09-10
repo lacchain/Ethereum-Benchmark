@@ -93,4 +93,14 @@ helper.verifyAmountData = amountData => {
     process.exit()
 }
 
+helper.verifyNumberOfContainers  = numerOfContainers => {
+    numerOfContainers = parseInt(numerOfContainers)
+    if(numerOfContainers>0 && isFinite(numerOfContainers)){
+        return numerOfContainers
+    }
+
+    console.log("invalid specified number of containers")
+    process.exit()
+}
+
 module.exports = helper
