@@ -47,6 +47,9 @@ const publishData = async(privKey,i,addtionalData="") => {
   }
 
   if((count+failed)===numberOfTransactions){
+    if(!txTimeResponse){
+	txTimeResponse = Date.now()-t1    
+    }
     showResponseResults(failed,txTimeResponse/1000)
     console.log("All done!!")
   }
@@ -79,7 +82,10 @@ const sendTxs =  numberOfTransactions => {
 
     //recursive
     i++
+    setTimeout(()=>{
     sendTxs(numberOfTransactions)//using recursive strategy to achieve delay
+    },0)
+    //sendTxs(numberOfTransactions)//using recursive strategy to achieve delay
   }
 }
 
@@ -93,6 +99,7 @@ const showStimulusResults = () => {
   console.log("time (s):", delta)
   const rate = numberOfTransactions/(delta)
   console.log("Rate: ",rate, "tx/s")
+  console.log("Data on each Tx (KB): ",amountData/1000)
 }
 
 const showResponseResults = (failed,delta) => {
@@ -105,7 +112,7 @@ const showResponseResults = (failed,delta) => {
   console.log("Average responsiveness rate: ",rate, "tx/s")
 }
 
-////////////////////////////////////MAIN///////////////////////////////////////////
+////////////////////////////////////MAIN/////////////////////////////////////////////
 
 t1 = Date.now()
 let tPrevious = t1
