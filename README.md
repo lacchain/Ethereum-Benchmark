@@ -33,34 +33,41 @@ Transactions are sent in an environment of zero ether and non additional data.
 ### HOW TO USE ###
 
 * Clone the repository
-* Enter into the folder ethereum-node-benchmark
+* Enter into the folder ethereum-node-benchmark/server
 * run npm install
-* Go to pantheon_utils/web3.js and modify the httpProvider pointing to the rpc url of the node you want to test.
+* Go back to the root folder and open docker-compose.yml; there you will have the posibility to set the following enviroment variables which aplies for all containers:
     ```shell
-    const web3 = new Web3(new Web3.providers.HttpProvider('http://YOUR_IP_NODE:RPC_PORT'))
+    - DESIRED_RATE_TX=50
+    - AMOUNT_DATA_BYTES=0
+    - TEST_TIME_MINUTES=1
+    - RPC_URL=http://localhost:1234
     ```
+    Where: 
+    1. DESIRED_RATE_TX : Is the rate at which pantheon node will receive transactions in a period of one second.
+    2. AMOUNT_DATA_BYTES : Is The amount of bytes to add on each transaction.
+    3. TEST_TIME_MINUTES :  Is the period of time, in minutes, at which Pantheon will be exposed to a bunch of transactions sent from this code when running.
+    4. RPC_URL : the rpc url that point to the pantheon node to test
+
+    Be mindful that you can run as many containers as you want; and also on each of those; you can customize
+    different RPC URLs.
+
+    It is recommended to set each container with the following considerations:
+    1. Set DESIRED_RATE_TX up to 50 tx/s if you send from 0 to 10kB (AMOUNT_DATA_BYTES)
+    2. Set DESIRED_RATE_TX up to 20 tx/s if you send from 10kB to 100kB (AMOUNT_DATA_BYTES)
+    3. Set DESIRED_RATE_TX up to 10 tx/s if you send from 100kB to 146.5kB (AMOUNT_DATA_BYTES); take into consideration that 146.5kB is aproximately the maximun amount of data you can send in Pantheon with the specified gas limit in the genesis.json, shown above.
+
 * Create the folder logs into the project folder:
     ```shell
     mkdir logs
     ```
-* Now you are ready to run the script index.js, but take into consideration the following syntax:
+* Now you are ready to run the project by using:
     ```shell
-    node index.js desiredRate_txs_per_second amount_bytes_to_send_on_each_transaction testing_time_in_minutes
+    docker-compose --build
     ```
-    Where: 
-    1. desiredRate_txs_per_second : Is the rate at which pantheon node will receive transactions in a period of one second.
-    2. amount_bytes_to_send_on_each_transaction : Is The amount of bytes to add on each transaction.
-    3. testing_time_in_minutes :  Is the period of time, in minutes, at which Pantheon will be exposed to a bunch of transactions.
 
 ### OBSERVATIONS AFTER RUNNING THE SCRIPT ###
 * When a bunch of transactions are sent to a regular node that is not connected to a validator, then those transactions are not processed, even when later that regular connects to a validator.
 
 * On each block, pantheon can store aproximately 950 transactions (transactions with zero ether and non additional data) at a rate of 963tx/s during 0.986seconds; pantheon response is in aproximately than 7 seconds.
 
-* Sending too much transactions(>2500) can reduce the performance of a pantheon node. It is worth to say those transactions have zero ether and non additional data.
-    1. Pantheon will take 2 minutes to process 2500 transactions which are sent at a rate of  1394tx/s during 1.793 seconds.
-    2. Pantheon will take 5 minutes to process 5000 transactions which are sent at a rate of  1669tx/s during 2.995 seconds; **nevertheless errors appears at this point**.
-
-* Sending 1000 transactions with 20kB of data at a rate of  161tx/s during 6.2 seconds will be processed by pantheon in 17 seconds.
-
-* Sending 2500 transactions with 20kB of data at a rate of  28tx/s during 87 seconds will be processed by pantheon in 2 minutes.
+* Graphics:
