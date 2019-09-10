@@ -1,11 +1,12 @@
 const {buildTransaction,sendTransaction} = require('./pantheon_utils/web3Operations')
 const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData} = require("./lib/helpers")
 const {append} = require("./lib/logs")
+const {DESIRED_RATE_TX,AMOUNT_DATA_BYTES,TEST_TIME_MINUTES} = require("./keys")
 
 ///////////////////////////////////VERIFICATIONS/////////////////////////////////////////////
-const desiredRateTx = verifyDesiredRate(parseInt(process.argv.slice(2)[0],10))
-const amountData =verifyAmountData(process.argv.slice(2)[1]) //data to store in bytes on each transaction
-const testTimeMinutes = verifyTestime(process.argv.slice(2)[2])
+const desiredRateTx = verifyDesiredRate(parseInt(DESIRED_RATE_TX))
+const amountData =verifyAmountData(AMOUNT_DATA_BYTES) //data to store in bytes on each transaction
+const testTimeMinutes = verifyTestime(TEST_TIME_MINUTES)
 const testTime = testTimeMinutes * 60//time in minutes => convert to seconds
 
 ///////////////////////////////////PROCESS VARIABLES/////////////////////////////////////////////
