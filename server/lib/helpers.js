@@ -1,5 +1,10 @@
 const helper = {}
 const readline = require('readline');
+const {sendTransaction} = require('../pantheon_utils/web3Operations')
+const {append} = require('./logs')
+const {STORE_DATA} =require('../keys')
+let count = 0
+let failed = 0
 
 helper.reproduce = (times,data) => {
     let customData = ""    
@@ -101,6 +106,42 @@ helper.verifyNumberOfContainers  = numerOfContainers => {
 
     console.log("invalid specified number of containers")
     process.exit()
+}
+
+helper.sendTransactionAndProcessIncommingTx = async (txObject,privKey,t1,fileNameResponse,numberOfTransactions) => {
+    let txTimeResponse
+    try{
+        await sendTransaction(txObject,privKey)//const receipt = await sendTransaction(txObject,privKey)//only awaiting here for pantheon response
+        txTimeResponse = (Date.now() - t1)
+        if(STORE_DATA=="TRUE"){
+        //append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(numberOfTransactions-count).toString()}`) //sending without awaitng
+        append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count+1).toString()}`) //sending without awaitng
+        }
+        count++
+        //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")  on block `,receipt.blockNumber,"...")        
+    }catch(e){
+        console.log(`Error with transaction N° ${count+1} => ${e.message}\n this error occurred in privateKey: ${privKey}`)
+        failed++
+    }
+
+    if((count+failed)===numberOfTransactions){
+        if(!txTimeResponse){
+        txTimeResponse = Date.now()-t1    
+        }
+        helper.showResponseResults(failed,txTimeResponse/1000,numberOfTransactions)
+        console.log("All done!!")
+    }
+
+}
+
+helper.showResponseResults = (failed,delta,numberOfTransactions) => {
+    console.log("\n************RESPONSE STATISTICS***************")  
+    console.log("N° processed Tx by Pantheon: ",numberOfTransactions-failed)
+    console.log(`N° no processed txs: ${failed}`)
+    console.log(`response time (s):  ${delta}` )
+    console.log(`Effectiveness(%): ${(numberOfTransactions-failed)/numberOfTransactions*100}%`)  
+    const rate = numberOfTransactions/(delta)
+    console.log("Average responsiveness rate: ",rate, "tx/s")
 }
 
 module.exports = helper

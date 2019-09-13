@@ -1,5 +1,5 @@
-const {buildTransaction,sendTransaction} = require('./pantheon_utils/web3Operations')
-const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData,verifyNumberOfContainers} = require("./lib/helpers")
+const {buildTransaction} = require('./pantheon_utils/web3Operations')
+const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData,verifyNumberOfContainers,sendTransactionAndProcessIncommingTx} = require("./lib/helpers")
 const {append} = require("./lib/logs")
 const {DESIRED_RATE_TX,AMOUNT_DATA_BYTES,TEST_TIME_MINUTES,NUMBER_OF_CONTAINERS,STORE_DATA} = require("./keys")
 
@@ -33,31 +33,10 @@ if(amountData>0){
 }
 
 ////////////////////////////CORE FUNCTIONS///////////////////////////////////////////////////
-const publishData = async(privKey,i,addtionalData="") => {
-  let txTimeResponse
-  try{
-    const txCount = 0//await web3.eth.getTransactionCount(addressFrom)
-    const txObject = buildTransaction(txCount,addressTo,valueInEther,addtionalData)
-    await sendTransaction(txObject,privKey)//const receipt = await sendTransaction(txObject,privKey)//only awaiting here for pantheon response
-    txTimeResponse = (Date.now() - t1)
-    if(STORE_DATA=="TRUE"){
-      //append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(numberOfTransactions-count).toString()}`) //sending without awaitng
-      append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count+1).toString()}`) //sending without awaitng
-    }
-    count++
-    //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")  on block `,receipt.blockNumber,"...")        
-  }catch(e){
-    console.log(`Error with transaction N° ${i} => ${e.message}\n Error occurred in privateKey: ${privKey}`)
-    failed++
-  }
-
-  if((count+failed)===numberOfTransactions){
-    if(!txTimeResponse){
-	txTimeResponse = Date.now()-t1    
-    }
-    showResponseResults(failed,txTimeResponse/1000)
-    console.log("All done!!")
-  }
+const publishData = (privKey,addtionalData="") => {
+  const txCount = 0//await web3.eth.getTransactionCount(addressFrom)
+  const txObject = buildTransaction(txCount,addressTo,valueInEther,addtionalData)
+  sendTransactionAndProcessIncommingTx(txObject,privKey,t1,fileNameResponse,numberOfTransactions)  
 }
 
 //@TODO: improve file name and randomData
@@ -107,16 +86,6 @@ const showStimulusResults = () => {
   const rate = numberOfTransactions/(delta)
   console.log("Rate: ",rate, "tx/s")
   console.log("Data on each Tx (KB): ",amountData/1000)
-}
-
-const showResponseResults = (failed,delta) => {
-  console.log("\n************RESPONSE STATISTICS***************")  
-  console.log("N° processed Tx by Pantheon: ",numberOfTransactions-failed)
-  console.log(`N° no processed txs: ${failed}`)
-  console.log(`response time (s):  ${delta}` )
-  console.log(`Effectiveness(%): ${(numberOfTransactions-failed)/numberOfTransactions*100}%`)  
-  const rate = numberOfTransactions/(delta)
-  console.log("Average responsiveness rate: ",rate, "tx/s")
 }
 
 ////////////////////////////////////MAIN/////////////////////////////////////////////
