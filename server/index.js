@@ -15,8 +15,6 @@ const addressTo = '0xf17f52151EbEF6C7334FAD080c5704D77216b732'
 const valueInEther = "0"
 let randomData=""
 let t1=null
-let count = 0
-let failed = 0
 let i = 0
 
 const timeOut = 1/desiredRateTx * 1000
@@ -45,7 +43,7 @@ const logOutputAndPublish = (pK,i) => {
   if(STORE_DATA=="TRUE"){
     append(`${fileNameStimulus}`,`${txSendingTime.toString()},${(i+1).toString()}`)
   }
-  publishData(pK,i,randomData)
+  publishData(pK,randomData)
 }
 
 const sendTxs =  numberOfTransactions => {  
@@ -75,7 +73,7 @@ const sendTxs =  numberOfTransactions => {
   }
 }
 
-///////////////////////////////////STIMULUS AND RESULTS////////////////////////////////////////////////
+///////////////////////////////////STIMULUS////////////////////////////////////////////////
 
 const showStimulusResults = () => {
   console.log("\n************STIMULUS STATISTICS***************")
@@ -94,5 +92,3 @@ t1 = Date.now()
 let tPrevious = t1
 console.log(`Please wait; this test will aproximately take ${timeOut/1000*2*numberOfTransactions} seconds...`)
 sendTxs(numberOfTransactions)
-
-//node index.js rate(tx/s) amountDataBytes timeTest(minutes)
