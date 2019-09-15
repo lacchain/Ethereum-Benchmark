@@ -123,7 +123,9 @@ helper.sendTransactionAndProcessIncommingTx = async (txObject,privKey,t1,fileNam
         failed++
         txTimeResponse = (Date.now() - t1)
         //console.log(`Error with transaction N° ${count+failed} => ${e.message}\n this error occurred in privateKey: ${privKey}`)
-        append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count).toString()}`) //sending without awaitng        
+        if(STORE_DATA=="TRUE"){
+            append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count).toString()}`) //sending without awaitng
+        }
     }
 
     if((count+failed)===numberOfTransactions){
