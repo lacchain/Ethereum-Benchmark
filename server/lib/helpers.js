@@ -120,18 +120,16 @@ helper.sendTransactionAndProcessIncommingTx = async (txObject,privKey,t1,fileNam
         count++
         //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")  on block `,receipt.blockNumber,"...")        
     }catch(e){
-        console.log(`Error with transaction N° ${count+1} => ${e.message}\n this error occurred in privateKey: ${privKey}`)
         failed++
+        txTimeResponse = (Date.now() - t1)
+        //console.log(`Error with transaction N° ${count+failed} => ${e.message}\n this error occurred in privateKey: ${privKey}`)
+        append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count).toString()}`) //sending without awaitng        
     }
 
     if((count+failed)===numberOfTransactions){
-        if(!txTimeResponse){
-        txTimeResponse = Date.now()-t1    
-        }
         helper.showResponseResults(failed,txTimeResponse/1000,numberOfTransactions)
         console.log("All done!!")
     }
-
 }
 
 helper.showResponseResults = (failed,delta,numberOfTransactions) => {
