@@ -77,7 +77,7 @@
 
     Note: This project is created whith the assumption that all containers runs with the same rate(DESIRED_RATE_TX) and all containers points to the same RPC URL.
 
-    If you want to simulate data(AMOUNT_DATA>0) for a long time, it is recommended to run a test for one minute verifying that the amount of data is not too big that takes the stimulus be done in more than a minute. If the stimulus
+    If you want to simulate data(AMOUNT_DATA>0) for a long time, it is recommended to run a test for one minute verifying that the amount of data is not too big that takes the stimulus be done in more than a minute; if so, you can reduce the amount of data(bytes) to send per transaction on each container and increment the number of containers in such way you reach the your desired rate.
 
 * Now you are ready to run the project by using:
     ```shell
@@ -124,7 +124,7 @@ ADJUSTED_GAS_PER_TX=(10%)GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
 
 #### EXAMPLES ####
 1. If you want to send at 200tx/sec then you we can set a maximum amount of gas and DATA allowed on that transaction by using:
-    1. ADJUSTED_GAS_FOR_200_TX_PER_SEC=(10%)*GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)<br>
+    1. ADJUSTED_GAS_FOR_200_TX_PER_SEC= (10%) * GAS_LIMIT/(RATE_TX_PER_SECOND * BLOCK_PERIOD_SECONDS)<br>
     2. then: ADJUSTED_GAS_FOR_200_TX_PER_SEC = (10%)*(800 000 000)/(**200** *2)
           ADJUSTED_GAS_FOR_200_TX_PER_SEC = 200 000 <br>
     Also: <br>
@@ -139,7 +139,7 @@ ADJUSTED_GAS_PER_TX=(10%)GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
     #### Then we can send 2.7kB of data at a rate of 200tx/s ####
 
 2. If you want to send at 100tx/sec then you we can set a maximum amount of gas and DATA allowed on that transaction by using:
-    1. ADJUSTED_GAS_FOR_100_TX_PER_SEC=(10%)*GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)<br>
+    1. ADJUSTED_GAS_FOR_100_TX_PER_SEC= (10%) * GAS_LIMIT/(RATE_TX_PER_SECOND * BLOCK_PERIOD_SECONDS)<br>
     2. then: ADJUSTED_GAS_FOR_100_TX_PER_SEC = (10%)*(800 000 000)/(**100** *2)
           ADJUSTED_GAS_FOR_100_TX_PER_SEC = 400 000 <br>
     Also: <br>
@@ -154,7 +154,7 @@ ADJUSTED_GAS_PER_TX=(10%)GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
     #### Then we can send 5.5kB of data at a rate of 100tx/s ####
 
 3. If you want to send at 50tx/sec then you we can set a maximum amount of gas and DATA allowed on that transaction by using:
-    1. ADJUSTED_GAS_FOR_50_TX_PER_SEC=(10%)*GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)<br>
+    1. ADJUSTED_GAS_FOR_50_TX_PER_SEC= (10%) * GAS_LIMIT/(RATE_TX_PER_SECOND * BLOCK_PERIOD_SECONDS)<br>
     2. then: ADJUSTED_GAS_FOR_50_TX_PER_SEC = (10%)*(800 000 000)/(**50** *2)
           ADJUSTED_GAS_FOR_50_TX_PER_SEC = 800 000 <br>
     Also: <br>
@@ -169,7 +169,7 @@ ADJUSTED_GAS_PER_TX=(10%)GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
     #### Then we can send 11.5kB of data at a rate of 50tx/s ####
 
 4. If you want to send at 10tx/sec then you we can set a maximum amount of gas and DATA allowed on that transaction by using:
-    1. ADJUSTED_GAS_FOR_10_TX_PER_SEC=(10%)*GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)<br>
+    1. ADJUSTED_GAS_FOR_10_TX_PER_SEC= (10%) * GAS_LIMIT/(RATE_TX_PER_SECOND * BLOCK_PERIOD_SECONDS)<br>
     2. then: ADJUSTED_GAS_FOR_10_TX_PER_SEC = (10%)*(800 000 000)/(**10** *2)
           ADJUSTED_GAS_FOR_50_TX_PER_SEC = 4 000 000 <br>
     Also: <br>
@@ -197,7 +197,7 @@ ADJUSTED_GAS_PER_TX=(10%)GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
 * 10tx/s with 58.5kB on each transaction (4 000 000). The following graphic show how a regular node was exposed during 30 minutes.
 <img src="graphs/10-txsPerSec-58500-bytesperTx-30-minutes-resume.png">
 
-* Lets analyze the graph in only ONE MINUTE in order to see the offset between the stimulus and response. 10tx/s with 58.5kB on each transaction (4 000 000)
+* Lets analyze the graph in only ONE MINUTE in order to see the offset between the stimulus and response. 10tx/s with 58.5kB on each transaction (4 000 000 gas)
 <img src="graphs/10-txsPerSec-58500-bytesperTx-1-minutes-resume.png">
 
 * rate(tx/s) Vs Gas/tx
@@ -210,7 +210,10 @@ ADJUSTED_GAS_PER_TX=(10%)GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
 ###  Increasing CPU resources ###
 In order to obtain higher transaction rates, we will increase the CPU resources to 24, then on this context is possible to send 400tx/s with node data during 30 minutes.
 
-Other test were run, on each of those the amount of gas was changed. In this context we found that Pantheon validator node responds adequately when is exposed at a stimulus of 400tx/s each of those with (100 000 000 gas) during 30 minutes.
+Other test were run, on each of those the amount of gas was changed. In this context we found that Pantheon validator node responds adequately when is exposed at a stimulus of 400tx/s each of those with (100 000 000 gas) during 30 minutes.<br>
+* 420tx/s with 3.45kB  on each transaction (107 000 000 gas). The following graph  show how a VALIDATOR node was exposed during 30 minutes in a machine with 24CPU.
+<img src="graphs/420txPerSec - 3450 bytesPerSec-107000000gasPerSec -30minutes-24CPU.png">
+
 
 ### CONCLUSIONS ###
 1. Block period seconds and block gas limit has a direct influence in how much transactions can be stored on Pantheon.
