@@ -9,30 +9,52 @@ services:
       - ./server:/app
     environment: #&environment
       - DESIRED_RATE_TX=1
-      - AMOUNT_DATA_BYTES=0
-      - TEST_TIME_MINUTES=1
-      - RPC_URL=http://localhost:1234  #http://35.239.2.191:4545
-      - NUMBER_OF_CONTAINERS=2
+      - AMOUNT_DATA_BYTES=1000000
+      - TEST_TIME_MINUTES=0.1
+      - RPC_URL=http://localhost:8545
+      - MAX_GAS_PER_TX=400000000 #not necessary to change this unless you change your BLOCKPERIODSECONDS.
+      - NUMBER_OF_CONTAINERS=1
       - STORE_DATA=TRUE
     network_mode: host #using localhost instead of isolated network
 
-  server2:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./server
-    volumes:
-      - /app/node_modules
-      - ./server:/app
-    environment: &environment #*environment
-      - DESIRED_RATE_TX=1
-      - AMOUNT_DATA_BYTES=0
-      - TEST_TIME_MINUTES=1
-      - RPC_URL=http://localhost:1234  #http://35.239.2.191:4545
-      - NUMBER_OF_CONTAINERS=2
-      - STORE_DATA=FALSE
-    network_mode: host
+  # server2:
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./server
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./server:/app
+  #   environment: &environment #*environment
+  #     - DESIRED_RATE_TX=1
+  #     - AMOUNT_DATA_BYTES=29
+  #     - TEST_TIME_MINUTES=0.1
+  #     - RPC_URL=http://34.69.84.196:4545
+  #     - MAX_GAS_PER_TX = 400000000
+  #     - NUMBER_OF_CONTAINERS=2
+  #     - STORE_DATA=FALSE
+  #   network_mode: host
 
   # server3:
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./server
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./server:/app
+  #   environment: *environment
+  #   network_mode: host
+
+  # server4:
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./server
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./server:/app
+  #   environment: *environment
+  #   network_mode: host
+
+  # server5:
   #   build:
   #     dockerfile: Dockerfile.dev
   #     context: ./server

@@ -1,4 +1,5 @@
 const {web3,ethTx} =  require('./web3')
+const {MAX_GAS_PER_TX} = require("../keys")
 
 function buildTransaction(txnCount,addressTo,valueInEther,customData){
     const data = web3.utils.toHex(customData)
@@ -8,7 +9,7 @@ function buildTransaction(txnCount,addressTo,valueInEther,customData){
     return txObject = {
         nonce: web3.utils.toHex(txnCount),
         gasPrice: web3.utils.toHex(0),
-        gasLimit: web3.utils.toHex(10000000),
+        gasLimit: web3.utils.toHex(parseInt(MAX_GAS_PER_TX)),
         to: addressTo,
         value: web3.utils.toHex(web3.utils.toWei(valueInEther, 'ether')),
         data
@@ -23,7 +24,7 @@ function buildSmartContractTransaction(txnCount,contractData){
     return txObject = {
         nonce: web3.utils.toHex(txnCount),
         gasPrice: web3.utils.toHex(0),
-        gasLimit: web3.utils.toHex(10000000),
+        gasLimit: web3.utils.toHex(800000000),
         data
     }
 }

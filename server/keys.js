@@ -4,5 +4,6 @@ module.exports = {
     TEST_TIME_MINUTES:process.env.TEST_TIME_MINUTES,
     RPC_URL:process.env.RPC_URL,
     NUMBER_OF_CONTAINERS:process.env.NUMBER_OF_CONTAINERS,
-    STORE_DATA:process.env.STORE_DATA
+    STORE_DATA:process.env.STORE_DATA,
+    MAX_GAS_PER_TX:process.env.MAX_GAS_PER_TX
 }

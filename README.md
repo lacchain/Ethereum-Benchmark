@@ -61,6 +61,7 @@
     - AMOUNT_DATA_BYTES=0
     - TEST_TIME_MINUTES=1
     - RPC_URL=http://localhost:1234
+    - MAX_GAS_PER_TX = 400000000
     - NUMBER_OF_CONTAINERS=2
     - STORE_DATA=TRUE
     ```
@@ -69,6 +70,7 @@
     2. AMOUNT_DATA_BYTES : Is The amount of bytes to add on each transaction.
     3. TEST_TIME_MINUTES :  Is the period of time, in minutes, at which Pantheon will be exposed to a bunch of transactions sent from this code when running.
     4. RPC_URL : the rpc url that point to the pantheon node to test
+    5. MAX_GAS_PER_TX is the maximum amount of allowed gas per transaction; in our case it is set to 4 million gas, because for our configuration it is the maximum allowed per transaction; beyond that point the transactions are put in a queue and starts consuming ram. It is worth to say to not touch this value during this test.
     5. NUMBER_OF_CONTAINERS is the number of containers you have configured on this docker-compose file.
     6. STORE_DATA : Only set to true on the first container; in te rest of copies set to false.
 
