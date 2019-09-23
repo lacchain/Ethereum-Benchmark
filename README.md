@@ -77,46 +77,43 @@
 
     Note: This project is created whith the assumption that all containers runs with the same rate(DESIRED_RATE_TX) and all containers points to the same RPC URL.
 
-    If you want to simulate data(AMOUNT_DATA>0) for a long time, it is recommended to run a test for one minute verifying that the amount of data is not too big that takes the stimulus be done in more than a minute; if so, you can reduce the amount of data(bytes) to send per transaction on each container and increment the number of containers in such way you reach the your desired rate.
+    If you want to simulate data(AMOUNT_DATA>0) for a long time,then it is recommended to run a test for one minute verifying that the amount of data is not too big that takes the stimulus be done in more than a minute; if so, you can reduce the amount of data(bytes) to send per transaction on each container and increment the number of containers in such way you reach the your desired rate.
 
 * Now you are ready to run the project by using:
     ```shell
     docker-compose up --build
     ```
 ### PROCESS ###
-1. Running the code with 1tx/s and iterating over the amount of data sent on each transaction, we can find that Pantheon supports as much as 146500 bytes per transaction.
-
-2. After many tests, sending different transaction(with no data), with different rates and different periods of time, the maximum rate at which pantheon can bear without  significant delays is 200tx/s (with no data); this result can vary depending basically of the CPU resources destinated to each node in the network; so in order to have greater transaction rates it is necessary to increase CPU resources mainly on nodes who validates blocks(in order to process transactions faster and reach a max network configuration velocity).
-
-3. Sending the maximum amount of data on each transaction(146500 bytes) at a rate of 200tx/s; allows us to measure how much transactions can be stored on each transaction at that rate: In our case is 80tx on each block; with the amount of 99,3% gas; with those values it is easy to infer that each transaction has (9 983 000 gas).
-
-4. Now we can infer that 146500 bytes are equivalent to 9 983 000 gas; then we can conclude that 68 units of gas are involded to enter one byte into Pantheon.
+1. Running the code with 1tx/s and iterating over the amount of data sent on each transaction, we can find that Pantheon supports as much as 146500 bytes per transaction when each transaction is limited to 10 000 000 gas. Besides logs on pantheon node shows that 146500 bytes consumes 9 983 000 gas, then we can conclude that 68 units of gas are involded to enter one CHARACTER into Pantheon.
 ```shell
 AMOUNT_GAS_ONE_BYTE=68
 ```
-
-5. We can infer that for a certain amount of bytes that we want to enter into Pantheon we can use:
+2. We can infer that for a certain amount of bytes that we want to enter into Pantheon we can use:
 ```shell
-AMOUNT_GAS_DATA=AMOUNT_GAS_ONE_BYTE*NUMBER_OF_BYTES
+AMOUNT_GAS_DATA=AMOUNT_GAS_ONE_BYTE*NUMBER_OF_BYTES_PER_TRANSACTION
 ```
 
-6. Using the same methodology but sending transactions without data, we can infer that to enter one transaction without data, 21004 units of gas are involved.
+3. After many tests, sending different transaction(with no data), with different rates and different periods of time, the maximum rate at which pantheon can bear without  significant delays is 200tx/s (with no data); this result can vary depending basically of the CPU resources destinated to each node in the network; so in order to have greater transaction rates it is necessary to increase CPU resources mainly on nodes who validates blocks(in order to process transactions faster and reach a max network configuration velocity).
+
+
+4. Using the same methodology but sending transactions without data, we can infer that to enter one transaction without data, 21004 units of gas are involved.
 ```shell
 AMOUNT_GAS_TRANSACTION_EMPTY=21004
 ```
-7. We can establish the following:
+5. We can establish the following:
 ```shell
 GAS_PER_TX = AMOUNT_GAS_TRANSACTION_EMPTY  + AMOUNT_GAS_DATA
 ```
-8. Now we can determine how much transactions can be stored on each block on Pantheon:
+6. Now we can determine how much transactions can be stored on each block on Pantheon:
 ```shell
-GAS_LIMIT=GAS_PER_TX * RATE_TX_PER_SECOND * BLOCK_PERIOD_SECONDS
+GAS_PER_BLOCK=GAS_PER_TX * RATE_TX_PER_SECOND * BLOCK_PERIOD_SECONDS
 ```
-From the previous we can conclude:
+From the previous, if GAS_PER_BLOCK reaches the GAS_LIMIT (the max gas per block) then:
 ```shell
 MAX_GAS_PER_TX = GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
 ```
-9. Setting the average allowed amount of gas per transaction: Experimentally we have noticed that pantheon do not perform at a 100%; one of the reasons is CPU resources(when higher transaction rates are sent then CPU resources reach higher levels, causing errors on Pantheon network). Even in scenarios of lower transaction rates but high amount of gas on each transaction, Pantheon do not fill its blocks with the 100% of gas(this is due high CPU resources because of high amount of gas per BLOCK). So in order to obtain a sustained response from Pantheon we should tune the average amount of gas that each transactions can have at a certain transaction rate in order to have a sustained response from Pantheon. For example for this network  we found that  when using 10% of the MAX_GAS_PER_TX we obtain a good response from Pantheon regular node.
+7. Setting the average allowed amount of gas per transaction: Experimentally we have noticed that pantheon do not perform at a 100% of the gas limit, FOR THIS CONFIGURATION(800 000 000 gas); one of the reasons is CPU resources(when higher transaction rates are sent then CPU resources reach higher levels, causing errors on Pantheon network). Even in scenarios of lower transaction rates but high amount of gas on each transaction, Pantheon do not fill its blocks with the 100% of gas(this is due high CPU resources because of high amount of gas per BLOCK). So in order to obtain a sustained response from Pantheon we should tune the average amount of gas that each transactions can have at a certain transaction rate in order to have a sustained response from Pantheon. For example for this network  we found that  when using 10% of the MAX_GAS_PER_TX we obtain a good response from Pantheon regular node.
+
 ```shell
 ADJUSTED_GAS_PER_TX=10%(MAX_GAS_PER_TX)
 ADJUSTED_GAS_PER_TX=(10%)GAS_LIMIT/(RATE_TX_PER_SECOND*BLOCK_PERIOD_SECONDS)
