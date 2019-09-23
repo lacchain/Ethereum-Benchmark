@@ -10,8 +10,8 @@ services:
     environment: #&environment
       - DESIRED_RATE_TX=1
       - AMOUNT_DATA_BYTES=1000000
-      - TEST_TIME_MINUTES=0.1
-      - RPC_URL=http://localhost:8545
+      - TEST_TIME_MINUTES=1
+      - RPC_URL=http://34.69.84.196:4545
       - MAX_GAS_PER_TX=400000000 #not necessary to change this unless you change your BLOCKPERIODSECONDS.
       - NUMBER_OF_CONTAINERS=1
       - STORE_DATA=TRUE
@@ -26,11 +26,11 @@ services:
   #     - ./server:/app
   #   environment: &environment #*environment
   #     - DESIRED_RATE_TX=1
-  #     - AMOUNT_DATA_BYTES=29
-  #     - TEST_TIME_MINUTES=0.1
+  #     - AMOUNT_DATA_BYTES=1000000
+  #     - TEST_TIME_MINUTES=1
   #     - RPC_URL=http://34.69.84.196:4545
-  #     - MAX_GAS_PER_TX = 400000000
-  #     - NUMBER_OF_CONTAINERS=2
+  #     - MAX_GAS_PER_TX=400000000
+  #     - NUMBER_OF_CONTAINERS=5
   #     - STORE_DATA=FALSE
   #   network_mode: host
 
