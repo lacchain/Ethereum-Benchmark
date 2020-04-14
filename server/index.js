@@ -2,6 +2,7 @@ const {buildTransaction} = require('./pantheon_utils/web3Operations')
 const {createRandomString,generateKeys,verifyDesiredRate,verifyTestime,verifyAmountData,verifyNumberOfContainers,sendTransactionAndProcessIncommingTx} = require("./lib/helpers")
 const {append} = require("./lib/logs")
 const {DESIRED_RATE_TX,AMOUNT_DATA_BYTES,TEST_TIME_MINUTES,NUMBER_OF_CONTAINERS,STORE_DATA} = require("./keys")
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 ///////////////////////////////////VERIFICATIONS/////////////////////////////////////////////
 const desiredRateTx = verifyDesiredRate(parseInt(DESIRED_RATE_TX))
