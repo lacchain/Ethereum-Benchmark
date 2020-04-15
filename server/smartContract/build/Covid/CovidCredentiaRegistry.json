@@ -1,0 +1,169 @@
+[
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "revoke",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"name": "citizen",
+				"type": "address"
+			}
+		],
+		"name": "verify",
+		"outputs": [
+			{
+				"name": "isValid",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"name": "startDate",
+				"type": "uint256"
+			},
+			{
+				"name": "exp",
+				"type": "uint256"
+			},
+			{
+				"name": "sex",
+				"type": "uint8"
+			},
+			{
+				"name": "age",
+				"type": "uint8"
+			},
+			{
+				"name": "geoHash",
+				"type": "bytes6"
+			},
+			{
+				"name": "credentialType",
+				"type": "uint8"
+			},
+			{
+				"name": "reason",
+				"type": "uint8"
+			}
+		],
+		"name": "register",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "by",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "startDate",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "iat",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "sex",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"name": "geoHash",
+				"type": "bytes6"
+			},
+			{
+				"indexed": false,
+				"name": "credentialType",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"name": "reason",
+				"type": "uint8"
+			}
+		],
+		"name": "CredentialRegistered",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "by",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "date",
+				"type": "uint256"
+			}
+		],
+		"name": "CredentialRevoked",
+		"type": "event"
+	}
+]
