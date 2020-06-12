@@ -2,9 +2,11 @@ const {web3} = require("./pantheon_utils/web3")
 // set to 1 for faster validation in this course.
 web3.transactionConfirmationBlocks = 1
 const sha3 = require("js-sha3").keccak_256
+const SMART_CONTRACT_OPTION  = process.env.SMART_CONTRACT_OPTION
+let set
 
-const set1 = () => {
-  console.log("#######################Setting new value#######################")
+const setSimpleStorage = () => {
+  console.log("#######################Preparing value for simple storage smart contract stress test#######################")
   const functionName = "setValue"
   const typeOfData = "uint256"
   const valueToSet = 67
@@ -15,8 +17,8 @@ const set1 = () => {
   return txData
 }
 
-const set = () => { //Set For David-19 smart contract
-  console.log("#######################Setting new value#######################")
+const setDavid19 = () => { //Set For David-19 smart contract
+  console.log("#######################Preparing value for David-19 smart contract stress test #######################")
   const functionName = "register"
   const typeOfData = "bytes32,bytes32,uint256,uint256,uint8,uint8,bytes6,uint8,uint8"
   //const valueToSet = 67
@@ -38,6 +40,16 @@ const set = () => { //Set For David-19 smart contract
   //console.log(txData)
   return txData
 }
+
+const chooseSmartContractSetter = () => {
+  if (SMART_CONTRACT_OPTION==0){
+    set = setSimpleStorage
+  }else if (SMART_CONTRACT_OPTION==1) {
+    set = setDavid19
+  }
+}
+
+chooseSmartContractSetter()
 
 //set()
 module.exports = {set}
