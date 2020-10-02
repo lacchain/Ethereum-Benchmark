@@ -225,3 +225,17 @@ Other test were run, on each of those the amount of gas was changed. In this con
 
 5. One way to check you have assigned correct CPU resources is verifying that the amount of gas stored on each block is equal to the amount of gas that you are sending per BlockPeriodSeconds during your stress test.
 If the stored amount of gas of each block is less than the gas you are sending per block then somthething is going bad and eventually you will have errors in your network.
+
+## Copyright 2020 LACChain
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
