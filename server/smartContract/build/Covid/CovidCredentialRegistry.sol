@@ -7,7 +7,7 @@ contract CovidCredentialRegistry is ICredentialRegistry{
   mapping (bytes32 => mapping (address => CovidMetadata)) credentials;
 
   function register(bytes32 hash, bytes32 subjectId, uint startDate, uint exp, Sex sex, uint8 age, bytes6 geoHash, CovidCode credentialType, InterruptionReason reason) external returns(bool) {
-    CovidMetadata storage credential = credentials[hash][msg.sender];
+    CovidMetadata storage credential = credentials[hash][_msgSender()];
     require(credential.subjectId==0,"Credential ID already exists");
 
     credential.subjectId = subjectId;
@@ -20,20 +20,20 @@ contract CovidCredentialRegistry is ICredentialRegistry{
     credential.credentialType = credentialType;
     credential.reason = reason;
     credential.status = true;
-    credentials[hash][msg.sender] = credential;
-    emit CredentialRegistered(hash, msg.sender, subjectId, startDate, credential.iat, sex, geoHash, credentialType, reason);
+    credentials[hash][_msgSender()] = credential;
+    emit CredentialRegistered(hash, _msgSender(), subjectId, startDate, credential.iat, sex, geoHash, credentialType, reason);
     return true;
   }
 
   function revoke(bytes32 hash) external returns(bool) {
-    CovidMetadata storage credential = credentials[hash][msg.sender];
+    CovidMetadata storage credential = credentials[hash][_msgSender()];
 
     require(credential.subjectId!=0, "credential hash doesn't exist");
     require(credential.status, "Credential is already revoked");  
      
     credential.status = false;  
-    credentials[hash][msg.sender] = credential;
-    emit CredentialRevoked(hash, msg.sender, now);
+    credentials[hash][_msgSender()] = credential;
+    emit CredentialRevoked(hash, _msgSender(), now);
     return true;
   }
   

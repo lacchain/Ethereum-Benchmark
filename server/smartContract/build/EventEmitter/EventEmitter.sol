@@ -10,26 +10,28 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-pragma solidity >=0.4.0 <0.6.0;
-
+pragma solidity >=0.4.0 <0.6.3;
+import "./BaseRelayRecipient.sol";
 // compile with:
 // solc EventEmitter.sol --bin --abi --optimize --overwrite -o .
 // then create web3j wrappers with:
 // web3j solidity generate -b ./generated/EventEmitter.bin -a ./generated/EventEmitter.abi -o ../../../../../ -p tech.pegasys.pantheon.tests.web3j.generated
-contract EventEmitter {
+contract EventEmitter is BaseRelayRecipient{
     address owner;
     event stored(address _to, uint _amount);
     address _sender;
     uint _value;
 
     constructor() public {
-        owner = msg.sender;
+        //owner = msg.sender;
+        owner =_msgSender();
     }
 
     function setValue(uint _amount) public {
-        emit stored(msg.sender, _amount);
+        //emit stored(msg.sender, _amount);
+        emit stored(_msgSender(), _amount);
         _value = _amount;
-        _sender = msg.sender;
+        _sender = _msgSender();
     }
 
     function getValue()  view public  returns (uint) {

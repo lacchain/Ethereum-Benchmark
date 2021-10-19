@@ -10,6 +10,7 @@ const isContractAddress = process.env.SMART_CONTRACT_ADDRESS
 const {set} = require('./changeSmartContractState')
 let txData
 
+
 const getSmartContractParameters = async() => {
   if (isContractAddress) {
     addressTo = process.env.SMART_CONTRACT_ADDRESS
