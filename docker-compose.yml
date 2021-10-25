@@ -9,10 +9,11 @@ services:
       - ./server:/app
     environment:
       - TEST_TYPE=1 # 0: ether sending test, 1: smart contract test
-      - SMART_CONTRACT_OPTION=0 #0: lightweigth SC test, 1: David19-Smart contract test
+      - SMART_CONTRACT_OPTION=2 #0: lightweigth SC test, 1: David19-Smart contract test, 2:RelayHub, 3:CrossBorder, 4:ARM
       - DESIRED_RATE_TX=1
       - TEST_TIME_MINUTES=1
-      - RPC_URL=http://RPC_URL:PORT
+      - RPC_URL=http://34.75.159.76:4545
+        #- RPC_URL=http://34.69.22.82:80 
       - MAX_GAS_PER_TX=1000000 #not necessary to change this unless you change your BLOCKPERIODSECONDS.
       - NUMBER_OF_CONTAINERS=1
       - STORE_DATA=TRUE
@@ -20,30 +21,34 @@ services:
     ############ SETTING FOR ETHER TESTING (IF REQUIRED) ##############      
       - AMOUNT_DATA_BYTES=0
     ############ SETTING FOR SMART CONTRACT TESTING ##############
-      #- SMART_CONTRACT_ADDRESS=0x4cf5ff8672BC73A108744927083893662b3C38D5 #to avoid deploying a contract again
+      - SMART_CONTRACT_ADDRESS=0x5d9b695643e57f2a28F5b8ca18CfD4eCF7126Da9 #to avoid deploying a contract again
+    #  - SMART_CONTRACT_ADDRESS=0xc9ED02761086151500606214c9F74C920319773f #David19
+    #  - SMART_CONTRACT_ADDRESS=0x736BBb331a370A32F1B9F62C8D32844B1da8D9A2 #CrossBorderRelay
+    #  - SMART_CONTRACT_ADDRESS=0xF45834324549CE42a36A0ab2829783a0BD18c825 #ARM
     network_mode: host #using localhost instead of isolated network
 
-  server2:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./server
-    volumes:
-      - /app/node_modules
-      - ./server:/app
-    environment: &environment
-      - TEST_TYPE=1
-      - DESIRED_RATE_TX=1
-      - TEST_TIME_MINUTES=1
-      - RPC_URL=http://RPC_URL:PORT
-      - MAX_GAS_PER_TX=80000000
-      - NUMBER_OF_CONTAINERS=1
-      - STORE_DATA=FALSE
+#  server2:
+#    build:
+#      dockerfile: Dockerfile.dev
+#      context: ./server
+#    volumes:
+#      - /app/node_modules
+#      - ./server:/app
+#    environment: &environment
+#      - TEST_TYPE=1
+#      - SMART_CONTRACT_OPTION=2
+#      - DESIRED_RATE_TX=1
+#      - TEST_TIME_MINUTES=1
+#      - RPC_URL=http://34.75.103.207:4545
+#      - MAX_GAS_PER_TX=800000000
+#      - NUMBER_OF_CONTAINERS=1
+#      - STORE_DATA=FALSE
       #- NODE_TLS_REJECT_UNAUTHORIZED=0
     ############ SETTING FOR ETHER TESTING (IF REQUIRED) ##############      
-      - AMOUNT_DATA_BYTES=0
+#      - AMOUNT_DATA_BYTES=0
     ############ SETTING FOR SMART CONTRACT TESTING ##############
-      - SMART_CONTRACT_ADDRESS=0x4cf5ff8672BC73A108744927083893662b3C38D5 #0x920BeC2BEcba71B34E619bBA1902Bfd44D792483 #0x68a185CAb9607B9BEb0B210Bf7CC320f3b3A3eFB
-    network_mode: host
+#      - SMART_CONTRACT_ADDRESS=0x3Ca0963A2b3bEeeD3b3EC0d3b6Cae6D99B4855e9 #0x920BeC2BEcba71B34E619bBA1902Bfd44D792483 #0x68a185CAb9607B9BEb0B210Bf7CC320f3b3A3eFB
+#    network_mode: host
 
   # server3:
   #   build:

@@ -26,15 +26,20 @@ const logOutputAndPublish = (pK,i) => {
   if(STORE_DATA=="TRUE"){
     append(`${fileNameStimulus}`,`${txSendingTime.toString()},${(i+1).toString()}`)
   }
-  publishData(pK,t1,numberOfTransactions)
+  publishData(pK,i,t1,numberOfTransactions)
 }
 
 const sendTxs =  numberOfTransactions => {  
 
   if(i<numberOfTransactions){
     //publishing
+
+    //let HexKey = "919b7e0e4095ce8a2cb22cea25a4d5888981d29d03cbdc714ed4b5f58313fdc6"
+    //const bufferRandomKey = Buffer.from(HexKey,'hex')  
+
+    //logOutputAndPublish(bufferRandomKey,i)
     logOutputAndPublish(randomPrivateKeys[i],i)
-    
+
     //waiting
     while((Date.now() - tPrevious) < timeOut){
     //waiting => more precise   
