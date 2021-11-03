@@ -16,32 +16,36 @@ services:
       - MAX_GAS_PER_TX=1000000 #not necessary to change this unless you change your BLOCKPERIODSECONDS.
       - NUMBER_OF_CONTAINERS=2
       - STORE_DATA=TRUE
+      - TEST_FROM_ADDRESS=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73
+      - TEST_PRIVATE_KEY=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73
       #- NODE_TLS_REJECT_UNAUTHORIZED=0
     ############ SETTING FOR ETHER TESTING (IF REQUIRED) ##############      
       - AMOUNT_DATA_BYTES=0
     ############ SETTING FOR SMART CONTRACT TESTING ##############
       - SMART_CONTRACT_ADDRESS=0xe44A1Bfce3eE0CACf5451637708870667047521A #to avoid deploying a contract again
     network_mode: host #using localhost instead of isolated network
-  server2:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./server
-    volumes:
-      - /app/node_modules
-      - ./server:/app
-    environment: &environment
-      - TEST_TYPE=1
-      - SMART_CONTRACT_OPTION=0 #0: lightweigth SC test, 1: David19-Smart contract test
-      - DESIRED_RATE_TX=1
-      - TEST_TIME_MINUTES=1
-      - RPC_URL=http://34.69.22.82
-      - MAX_GAS_PER_TX=1000000
-      - NUMBER_OF_CONTAINERS=2
-      - STORE_DATA=FALSE
-      #- NODE_TLS_REJECT_UNAUTHORIZED=0
-    ############ SETTING FOR ETHER TESTING (IF REQUIRED) ##############      
-      - AMOUNT_DATA_BYTES=0
-    ############ SETTING FOR SMART CONTRACT TESTING ##############
-      - SMART_CONTRACT_ADDRESS=0xe44A1Bfce3eE0CACf5451637708870667047521A #0x920BeC2BEcba71B34E619bBA1902Bfd44D792483 #0x68a185CAb9607B9BEb0B210Bf7CC320f3b3A3eFB
-    network_mode: host
+  # server2:
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./server
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./server:/app
+  #   environment: &environment
+  #     - TEST_TYPE=1
+  #     - SMART_CONTRACT_OPTION=0 #0: lightweigth SC test, 1: David19-Smart contract test
+  #     - DESIRED_RATE_TX=1
+  #     - TEST_TIME_MINUTES=1
+  #     - RPC_URL=http://34.69.22.82
+  #     - MAX_GAS_PER_TX=1000000
+  #     - NUMBER_OF_CONTAINERS=2
+  #     - STORE_DATA=FALSE
+  #     - TEST_FROM_ADDRESS=0x627306090abaB3A6e1400e9345bC60c78a8BEf57
+  #     - TEST_PRIVATE_KEY=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73
+  #     #- NODE_TLS_REJECT_UNAUTHORIZED=0
+  #   ############ SETTING FOR ETHER TESTING (IF REQUIRED) ##############      
+  #     - AMOUNT_DATA_BYTES=0
+  #   ############ SETTING FOR SMART CONTRACT TESTING ##############
+  #     - SMART_CONTRACT_ADDRESS=0xe44A1Bfce3eE0CACf5451637708870667047521A #0x920BeC2BEcba71B34E619bBA1902Bfd44D792483 #0x68a185CAb9607B9BEb0B210Bf7CC320f3b3A3eFB
+  #   network_mode: host
 
