@@ -5,15 +5,22 @@ const sha3 = require("js-sha3").keccak_256
 const SMART_CONTRACT_OPTION  = process.env.SMART_CONTRACT_OPTION
 let set
 
+const nodeAddress = '0xd00e6624a73f88b39f82ab34e8bf2b4d226fd768';
+const expiration = 1636394529;
+
+
 const setSimpleStorage = () => {
   console.log("#######################Preparing value for simple storage smart contract stress test#######################")
-  const functionName = "setValue"
+  const functionName = "store"
   const typeOfData = "uint256"
-  const valueToSet = 67
+  const valueToSet = 5
   let set = web3.eth.abi.encodeFunctionSignature(`${functionName}(${typeOfData})`)//function name to use
-  let value = web3.eth.abi.encodeParameter('uint256', valueToSet)//setting the value
-
-  const txData = set + value.substr(2)
+  //let value = web3.eth.abi.encodeParameter('uint256', valueToSet)//setting the value
+  let valueAdd= web3.eth.abi.encodeParameters(
+    ["uint256","address","uint256"],
+    [valueToSet,nodeAddress,expiration]);
+  //console.log("")const txData = set + value.substr(2) ;
+  const txData = set +  valueAdd.substr(2);
   return txData
 }
 
@@ -36,7 +43,7 @@ const setDavid19 = () => { //Set For David-19 smart contract
   let value = web3.eth.abi.encodeParameters(
     ["bytes32","bytes32","uint256","uint256","uint8","uint8","bytes6","uint8","uint8"],
     [hash,id,startDate,exp,sex,age,geoHash,credentialType,reason])//setting the value
-  const txData = set + value.substr(2)
+  const txData = set + value.substr(2) + valueAdd.substr(2);
   //console.log(txData)
   return txData
 }

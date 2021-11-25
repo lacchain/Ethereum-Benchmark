@@ -24,13 +24,14 @@ function buildSmartContractTransaction(txnCount,contractData){
     return txObject = {
         nonce: web3.utils.toHex(txnCount),
         gasPrice: web3.utils.toHex(0),
-        gasLimit: web3.utils.toHex(1000000),
+        gasLimit: web3.utils.toHex(parseInt(MAX_GAS_PER_TX)),
         data
     }
 }
 
 const sendTransaction= async(txObject,privKey)=>{
     //console.log('sending data...')
+    let receiptRpta;
 
     const tx = new ethTx(txObject)
     tx.sign(privKey)
@@ -39,8 +40,22 @@ const sendTransaction= async(txObject,privKey)=>{
     const rawTxHex = '0x' + serializedTx.toString('hex')
     //console.log(rawTxHex)
     
-    const receipt = await web3.eth.sendSignedTransaction(rawTxHex)
-    return receipt
+    //const receipt = await web3.eth.sendSignedTransaction(rawTxHex)
+    web3.eth.sendSignedTransaction(rawTxHex)
+    .on('receipt', receipt => { 
+        receiptRpta=receipt;
+        //console.log('Receipt: ', receipt);
+     })
+    .catch(error => { console.log('Error: ', error.message); })
+    .then(function(receipt){
+        if (typeof receipt !== 'undefined'){
+            //console.log(" blockNumber:"+ receipt.blockNumber +"  trasaction mined! " + receipt.transactionHash );
+            console.log("  block %s , trasaction mined!  %s" , receipt.blockNumber, receipt.transactionHash);
+        }
+        
+    });;
+
+    return receiptRpta;
 }
 
 const getData = async(blockNumber)=>{
@@ -55,7 +70,7 @@ const getTransaction = async txHash => {
     return receivedTX
 }
 
-const deploySmartContract = async(contractData,addressFrom,privKey) => {
+const deploySmartContract = async(contractData,addressFrom,privKey, addressNode) => {
     try{
         const txCount = await web3.eth.getTransactionCount(addressFrom)
         const txObject = buildSmartContractTransaction(txCount,contractData)
