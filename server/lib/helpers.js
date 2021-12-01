@@ -111,18 +111,20 @@ helper.verifyNumberOfContainers  = numerOfContainers => {
 helper.sendTransactionAndProcessIncommingTx = async (txObject,privKey,t1,fileNameResponse,numberOfTransactions) => {
     let txTimeResponse
     try{
-        await sendTransaction(txObject,privKey)//const receipt = await sendTransaction(txObject,privKey)//only awaiting here for pantheon response
+        await sendTransaction(txObject,privKey)
+        //const receipt = await sendTransaction(txObject,privKey)//only awaiting here for pantheon response
+        //console.log("returned receipt is: ", JSON.stringify(receipt))
         txTimeResponse = (Date.now() - t1)
         if(STORE_DATA=="TRUE"){
         //append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(numberOfTransactions-count).toString()}`) //sending without awaitng
         append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count+1).toString()}`) //sending without awaitng
         }
         count++
-        //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")  on block `,receipt.blockNumber,"...")        
+        //console.log(`Transaction N° ${i} Stored on block `,receipt.blockNumber,"...")  //on block `,receipt.blockNumber,"...")
     }catch(e){
         failed++
         txTimeResponse = (Date.now() - t1)
-        //console.log(`Error with transaction N° ${count+failed} => ${e.message}\n this error occurred in privateKey: ${privKey}`)
+        console.log(`Error with transaction N° ${count+failed} => ${e.message}\n this error occurred in privateKey: ${privKey}`)
         if(STORE_DATA=="TRUE"){
             append(`${fileNameResponse}`,`${txTimeResponse.toString()},${(count).toString()}`) //sending without awaitng
         }

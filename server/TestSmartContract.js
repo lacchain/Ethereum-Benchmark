@@ -26,15 +26,8 @@ const getSmartContractParameters = async() => {
 }
 
 const publishSmartContractTransaction = async(privKey,t1,numberOfTransactions) => {
-  // const privateKeyBuffer = EthUtil.toBuffer('0xf2ec77f749fc3a6552a4385ab043277463a8f359970dacc727a894db1c10d399');
-   const wallet = ethWallet.fromPrivateKey(privKey);
-   addressFrom = wallet.getAddressString()
-   // console.log('addres   : ' + addressFrom);
-  //const txCount = 0 
-  const txCount =await web3.eth.getTransactionCount(addressFrom)
- // console.log("private key " + privKey)
-  const txObject = buildTransaction(txCount,addressTo,valueInEther,txData)
-  sendTransactionAndProcessIncommingTx(txObject,privKey,t1,fileNameResponse,numberOfTransactions)  
+  const txObject = buildTransaction(0,addressTo,valueInEther,txData)
+  sendTransactionAndProcessIncommingTx(txObject,privKey,t1,fileNameResponse,numberOfTransactions)
 }
 
 const execSmartContractTest = async() => {

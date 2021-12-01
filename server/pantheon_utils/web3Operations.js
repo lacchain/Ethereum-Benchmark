@@ -40,22 +40,23 @@ const sendTransaction= async(txObject,privKey)=>{
     const rawTxHex = '0x' + serializedTx.toString('hex')
     //console.log(rawTxHex)
     
-    //const receipt = await web3.eth.sendSignedTransaction(rawTxHex)
-    web3.eth.sendSignedTransaction(rawTxHex)
-    .on('receipt', receipt => { 
-        receiptRpta=receipt;
-        //console.log('Receipt: ', receipt);
-     })
-    .catch(error => { console.log('Error: ', error.message); })
-    .then(function(receipt){
-        if (typeof receipt !== 'undefined'){
-            //console.log(" blockNumber:"+ receipt.blockNumber +"  trasaction mined! " + receipt.transactionHash );
-            console.log("  block %s , trasaction mined!  %s" , receipt.blockNumber, receipt.transactionHash);
-        }
+    const receipt = await web3.eth.sendSignedTransaction(rawTxHex)
+    // web3.eth.sendSignedTransaction(rawTxHex)
+    // .on('receipt', receipt => { 
+    //     receiptRpta=receipt;
+    //     //console.log('Receipt: ', receipt);
+    //  })
+    // .catch(error => { console.log('Error: ', error.message); })
+    // .then(function(receipt){
+    //     if (typeof receipt !== 'undefined'){
+    //         //console.log(" blockNumber:"+ receipt.blockNumber +"  trasaction mined! " + receipt.transactionHash );
+    //         console.log("  block %s , trasaction mined!  %s" , receipt.blockNumber, receipt.transactionHash);
+    //     }
         
-    });;
+    // });;
 
-    return receiptRpta;
+    //return receiptRpta;
+    return receipt
 }
 
 const getData = async(blockNumber)=>{
