@@ -5,5 +5,6 @@ module.exports = {
     RPC_URL:process.env.RPC_URL,
     NUMBER_OF_CONTAINERS:process.env.NUMBER_OF_CONTAINERS,
     STORE_DATA:process.env.STORE_DATA,
-    MAX_GAS_PER_TX:process.env.MAX_GAS_PER_TX
+    MAX_GAS_PER_TX:process.env.MAX_GAS_PER_TX,
+    NODE_ADDRESS:process.env.NODE_ADDRESS
 }

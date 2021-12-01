@@ -1,12 +1,14 @@
 const {web3} = require("./pantheon_utils/web3")
+const {NODE_ADDRESS} = require('./keys')
 // set to 1 for faster validation in this course.
 web3.transactionConfirmationBlocks = 1
 const sha3 = require("js-sha3").keccak_256
 const SMART_CONTRACT_OPTION  = process.env.SMART_CONTRACT_OPTION
 let set
 
-const nodeAddress = '0xc2d2aef92e0828e4420e7cb94bda2acad537c6ca' //'0xd00e6624a73f88b39f82ab34e8bf2b4d226fd768';
-const expiration = 1636394529;
+const nodeAddress = NODE_ADDRESS; //'0xc2d2aef92e0828e4420e7cb94bda2acad537c6ca' //'0xd00e6624a73f88b39f82ab34e8bf2b4d226fd768';
+const date = new Date()
+const expiration =  Math.floor(date.getTime()/1000) + 5000
 
 
 const setSimpleStorage = () => {
