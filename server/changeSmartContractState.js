@@ -87,6 +87,33 @@ const setFalconVerifier = () => {
   return txData;
 };
 
+const setRelayMetaTx = () => {
+  console.log(
+    "#####################Preparing falcon meta transaction for RelayMin  ######################"
+  );
+  const functionName = "relayMetaTx";
+  const typeOfData = "bytes,uint8,bytes32,bytes32,bytes,bytes";
+  const signature = getSignature();
+  const message = getMessage();
+  const pubKey = getPubKey();
+  const set = web3.eth.abi.encodeFunctionSignature(
+    `${functionName}(${typeOfData})`
+  );
+  const value = web3.eth.abi.encodeParameters(
+    ["bytes", "uint8", "bytes32", "bytes32", "bytes", "bytes"],
+    [
+      message,
+      "0x2a",
+      "0xa2d2b1021e1428740a7c67af3c05fe3160481889b25b921108ac0ac2c3d5d40a",
+      "0x63186d2aaefe188748bfb4b46fb9493cbc2b53cf36169e8501a5bc0ed941b484",
+      signature,
+      pubKey,
+    ]
+  );
+  const txData = set + value.substr(2);
+  return txData;
+};
+
 const chooseSmartContractSetter = () => {
   if (SMART_CONTRACT_OPTION == 0) {
     set = setSimpleStorage;
@@ -94,6 +121,8 @@ const chooseSmartContractSetter = () => {
     set = setDavid19;
   } else if (SMART_CONTRACT_OPTION == 2) {
     set = setFalconVerifier;
+  } else if (SMART_CONTRACT_OPTION == 3) {
+    set = setRelayMetaTx;
   }
 };
 

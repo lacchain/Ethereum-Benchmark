@@ -39,7 +39,7 @@
 
     ```shell
       - TEST_TYPE=1 # 0: ether sending test, 1: smart contract test
-      - SMART_CONTRACT_OPTION=1 #0: lightweigth Smart Contract test (33314 gas/tx), 1: Heavy contract test (213890 gas/tx), 2: Falcon Signature test (64100 gas/tx)
+      - SMART_CONTRACT_OPTION=1 #0: lightweigth Smart Contract test (33314 gas/tx), 1: Heavy contract test (213890 gas/tx), 2: Falcon Signature test (64100 gas/tx), 3: Relat PQ Meta Tx
       - DESIRED_RATE_TX=1 #Rate in tx/s
       - TEST_TIME_MINUTES=0.1 #choose the time
       - RPC_URL=http://RPC_URL:PORT
