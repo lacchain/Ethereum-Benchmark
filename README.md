@@ -4,7 +4,7 @@
 
 <p>Determine how much transactions can be stored on each block
 </p>
-<p> Establish limitations of Pantheon when it is exposed to a stress test.</p>
+<p> Establish limitations of Hyperledger Besu when it is exposed to a stress test.</p>
 
 
 ## Preliminary concepts
@@ -17,7 +17,7 @@
 ## TERMINOLOGY
 
 1. Stimulus: Transactions that are sent to a node in a period of time at some rate(transactions per second) and each transaction containing a certain amount of gas.
-2. Source: The node which sends the stimulus to some node in a Pantheon network.
+2. Source: The node which sends the stimulus to some node in a Besu network.
 3. Response: The receipts that are sent back to the source; in this test the time that each response takes to be done and how much receipts are sent from the tested node will be measured.
 
 ## REQUIREMENTS
@@ -39,7 +39,7 @@
 
     ```shell
       - TEST_TYPE=1 # 0: ether sending test, 1: smart contract test
-      - SMART_CONTRACT_OPTION=1 #0: lightweigth Smart Contract test (33314 gas/tx), 1: Heavy contract test (213890 gas/tx)
+      - SMART_CONTRACT_OPTION=1 #0: lightweigth Smart Contract test (33314 gas/tx), 1: Heavy contract test (213890 gas/tx), 2: Falcon Signature test (64100 gas/tx)
       - DESIRED_RATE_TX=1 #Rate in tx/s
       - TEST_TIME_MINUTES=0.1 #choose the time
       - RPC_URL=http://RPC_URL:PORT
@@ -68,7 +68,7 @@
 
     Note: This project is created whith the assumption that all containers runs with the same rate(DESIRED_RATE_TX).
 
-    If you want to simulate data(AMOUNT_DATA>0) for a long time,then it is recommended to run a test for one minute verifying that the amount of data is not too big that takes the stimulus be done in more than a minute; if so, you can reduce the amount of data(bytes) to send per transaction on each container and increment the number of containers in such way you reach the your desired rate.
+    If you want to simulate data(AMOUNT_DATA>0) for a long time,then it is recommended to run a test for one minute verifying that the amount of data is not too big that takes the stimulus be done in more than a minute; if so, you can reduce the amount of data(bytes) to be sent per transaction on each container and increment the number of containers in such way you reach the your desired rate.
 
 * Now you are ready to run the project by using:
 
