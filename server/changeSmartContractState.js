@@ -91,11 +91,20 @@ const setRelayMetaTx = () => {
   console.log(
     "#####################Preparing falcon meta transaction for RelayMin  ######################"
   );
+  const privKey =
+    "0x4c0883a69102937d6231471b5dbb6204fe5129617082792ae468d01a3f362318";
+  return _setRelayMetaTx(privKey);
+};
+
+const _setRelayMetaTx = (privKey) => {
   const functionName = "relayMetaTx";
   const typeOfData = "bytes,uint8,bytes32,bytes32,bytes,bytes";
-  const signature = getSignature();
   const message = getMessage();
-  const pubKey = getPubKey();
+  const falconPubKey = getPubKey();
+  const falconSignature = getSignature();
+
+  const signed = web3.eth.accounts.sign(message, privKey);
+
   const set = web3.eth.abi.encodeFunctionSignature(
     `${functionName}(${typeOfData})`
   );
@@ -103,11 +112,39 @@ const setRelayMetaTx = () => {
     ["bytes", "uint8", "bytes32", "bytes32", "bytes", "bytes"],
     [
       message,
-      "0x2a",
-      "0xa2d2b1021e1428740a7c67af3c05fe3160481889b25b921108ac0ac2c3d5d40a",
-      "0x63186d2aaefe188748bfb4b46fb9493cbc2b53cf36169e8501a5bc0ed941b484",
-      signature,
-      pubKey,
+      signed.v,
+      signed.r, // "0xa2d2b1021e1428740a7c67af3c05fe3160481889b25b921108ac0ac2c3d5d40a",
+      signed.s, //"0x63186d2aaefe188748bfb4b46fb9493cbc2b53cf36169e8501a5bc0ed941b484",
+      falconPubKey,
+      falconSignature,
+    ]
+  );
+  const txData = set + value.substr(2);
+  console.log(txData);
+  return txData;
+};
+
+const setTransactionAllowed = () => {
+  console.log(
+    "#####################Preparing Transaction Allowed payload  ######################"
+  );
+  const functionName = "transactionAllowed";
+  const typeOfData = "address,address,uint256,uint256,uint256,bytes";
+  const set = web3.eth.abi.encodeFunctionSignature(
+    `${functionName}(${typeOfData})`
+  );
+  const privKey =
+    "0xd7505cb4f3aec16303ef125b14c4af3c8a237ea1afe9726ede5697ea9f1479ec";
+  const senderAddress = web3.eth.accounts.privateKeyToAccount(privKey);
+  const value = web3.eth.abi.encodeParameters(
+    ["address", "address", "uint256", "uint256", "uint256", "bytes"],
+    [
+      senderAddress.address,
+      "0x5A9F4466Fd389810e0A195a2F0Ab960f69093B67", // relayHub
+      "0",
+      "0",
+      "0xffff",
+      _setRelayMetaTx(privKey),
     ]
   );
   const txData = set + value.substr(2);
@@ -123,6 +160,8 @@ const chooseSmartContractSetter = () => {
     set = setFalconVerifier;
   } else if (SMART_CONTRACT_OPTION == 3) {
     set = setRelayMetaTx;
+  } else if (SMART_CONTRACT_OPTION == 4) {
+    set = setTransactionAllowed;
   }
 };
 

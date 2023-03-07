@@ -1,10 +1,11 @@
 //SPDX-License-Identifier: APACHE2
-pragma solidity ^0.6.5;
+pragma solidity ^0.8.9;
 
 contract PostQuantumPermissioning {
     address relayHub;
+    uint256 private version = 1000000;
 
-    constructor(address _relayHub) public {
+    constructor(address _relayHub) {
         relayHub = _relayHub;
     }
 
@@ -57,5 +58,10 @@ contract PostQuantumPermissioning {
             );
         require(success && verifies.length == 32);
         return verifies[verifies.length - 1] == 0;
+    }
+
+    // VERSION
+    function getContractVersion() public view returns (uint256) {
+        return version;
     }
 }
