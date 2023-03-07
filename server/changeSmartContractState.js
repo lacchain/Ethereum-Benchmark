@@ -16,7 +16,7 @@ const setSimpleStorage = () => {
   );
   const functionName = "setValue";
   const typeOfData = "uint256";
-  const valueToSet = 67;
+  const valueToSet = 5;
   let set = web3.eth.abi.encodeFunctionSignature(
     `${functionName}(${typeOfData})`
   ); //function name to use
